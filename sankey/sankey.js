@@ -4,8 +4,8 @@ d3.sankey = function() {
       nodePadding = 8,
       size = [1, 1],
       nodes = [],
-      links = [];
-      relaxLeft=true;
+      links = [],
+      relaxLeft=true,
       relaxRight=true;
       
   sankey.nodeWidth = function(_) {
