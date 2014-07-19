@@ -5,7 +5,9 @@ d3.sankey = function() {
       size = [1, 1],
       nodes = [],
       links = [];
-
+      relaxLeft=true;
+      relaxRight=true;
+      
   sankey.nodeWidth = function(_) {
     if (!arguments.length) return nodeWidth;
     nodeWidth = +_;
@@ -33,6 +35,17 @@ d3.sankey = function() {
   sankey.size = function(_) {
     if (!arguments.length) return size;
     size = _;
+    return sankey;
+  };
+
+  sankey.relaxLeft = function(_) {
+    if (!arguments.length) return relaxLeft;
+    relaxLeft = _;
+    return sankey;
+  };
+  sankey.relaxRight = function(_) {
+    if (!arguments.length) return relaxRight;
+    relaxRight = _;
     return sankey;
   };
 
@@ -163,10 +176,14 @@ d3.sankey = function() {
     initializeNodeDepth();
     resolveCollisions();
     for (var alpha = 1; iterations > 0; --iterations) {
-      relaxRightToLeft(alpha *= .99);
-      resolveCollisions();
-      relaxLeftToRight(alpha);
-      resolveCollisions();
+      if (relaxLeft) {
+        relaxRightToLeft(alpha *= .99);
+        resolveCollisions();
+      }
+      if (relaxRight) {
+        relaxLeftToRight(alpha);
+        resolveCollisions();
+      }
     }
 
     function initializeNodeDepth() {
